@@ -3,11 +3,12 @@ name: Send New Contact Form Submissions
 on:
   schedule:
     # Runs every day at 8:00 AM IST (2:30 AM UTC)
-    # - cron: '30 2 * * *'
     # Runs every day at 3:00 PM IST (9:30 AM UTC)
-    # - cron: '30 9 * * *'
+    # - cron: '30 2,9 * * *'
 
-    - cron: '*/2 * * * *'
+    - cron: '0 11 * * *'
+  
+  workflow_dispatch:
 
 jobs:
   send-contacts:
