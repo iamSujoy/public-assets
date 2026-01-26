@@ -1,0 +1,47 @@
+name: Send New Contact Form Submissions
+
+on:
+  schedule:
+    # Runs every day at 8:00 AM IST (2:30 AM UTC)
+    # - cron: '30 2 * * *'
+    # Runs every day at 3:00 PM IST (9:30 AM UTC)
+    # - cron: '30 9 * * *'
+
+    - cron: '*/10 * * * *'
+
+  
+  # Allows manual triggering from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  send-contacts:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        working-directory: pghouse
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run contact notification script
+        working-directory: pghouse
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          CHECK_INTERVAL_HOURS: ${{ secrets.CHECK_INTERVAL_HOURS}}  # Check for contacts from last 8 hours
+        run: |
+          python main.py
