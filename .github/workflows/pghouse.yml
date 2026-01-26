@@ -7,13 +7,7 @@ on:
     # Runs every day at 3:00 PM IST (9:30 AM UTC)
     # - cron: '30 9 * * *'
 
-    - cron: '*/10 * * * *'
-    branches:
-      - main
-
-  
-  # Allows manual triggering from GitHub Actions tab
-  workflow_dispatch:
+    - cron: '*/2 * * * *'
 
 jobs:
   send-contacts:
